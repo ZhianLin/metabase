@@ -7,6 +7,7 @@ import { isWithinIframe } from "metabase/lib/dom";
 import { useDispatch } from "metabase/lib/redux";
 import { setInitialUrlOptions } from "metabase/redux/embed";
 
+// use this one
 export const useEmbedFrameOptions = ({ location }: { location: Location }) => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -19,6 +20,7 @@ export const useEmbedFrameOptions = ({ location }: { location: Location }) => {
     theme,
     hide_parameters,
     hide_download_button,
+    downloads,
   } = parseHashOptions(location.hash) as DashboardUrlHashOptions;
 
   return {
@@ -27,5 +29,6 @@ export const useEmbedFrameOptions = ({ location }: { location: Location }) => {
     theme,
     hide_parameters,
     hide_download_button,
+    downloads,
   };
 };

@@ -80,6 +80,7 @@ const _StaticDashboard = ({
         setRefreshElapsedHook={setRefreshElapsedHook}
         font={font}
         bordered={options.bordered}
+        downloadsEnabled={withDownloads}
       />
     </Box>
   );

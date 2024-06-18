@@ -13,6 +13,7 @@ import type {
 } from "metabase/dashboard/types";
 import type { DashboardUrlHashOptions } from "metabase/dashboard/types/hash-options";
 import { parseHashOptions } from "metabase/lib/browser";
+import { PLUGIN_RESOURCE_DOWNLOADS } from "metabase/plugins";
 import type { DisplayTheme } from "metabase/public/lib/types";
 
 export const useDashboardUrlParams = ({
@@ -39,6 +40,15 @@ export const useDashboardUrlParams = ({
     theme,
     titled,
   } = useEmbedDisplayOptions();
+
+  const { hide_download_button, downloads } = parseHashOptions(
+    location.hash,
+  ) as { hide_download_button?: boolean; downloads?: boolean };
+
+  const downloadsEnabled = PLUGIN_RESOURCE_DOWNLOADS.areDownloadsEnabled({
+    hide_download_button,
+    downloads,
+  });
 
   const { isFullscreen, onFullscreenChange } = useDashboardFullscreen();
   const { onRefreshPeriodChange, refreshPeriod, setRefreshElapsedHook } =
@@ -111,5 +121,6 @@ export const useDashboardUrlParams = ({
     setHideDownloadButton,
     font,
     setFont,
+    downloadsEnabled,
   };
 };

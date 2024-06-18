@@ -55,6 +55,7 @@ export const DashboardControls = <T extends DashboardControlsProps>(
       titled,
       font,
       setFont,
+      downloadsEnabled,
     } = useDashboardUrlParams({ location, onRefresh: refreshDashboard });
 
     useDashboardNav({ isFullscreen });
@@ -87,6 +88,7 @@ export const DashboardControls = <T extends DashboardControlsProps>(
         font={font}
         setFont={setFont}
         parameterQueryParams={parameterQueryParams}
+        downloadsEnabled={downloadsEnabled}
       />
     );
   }

@@ -41,7 +41,6 @@ import { isActionDashCard } from "metabase/dashboard/utils";
 import title from "metabase/hoc/Title";
 import { isWithinIframe } from "metabase/lib/dom";
 import ParametersS from "metabase/parameters/components/ParameterValueWidget.module.css";
-import { PLUGIN_RESOURCE_DOWNLOADS } from "metabase/plugins";
 import { WithPublicDashboardEndpoints } from "metabase/public/containers/PublicOrEmbeddedDashboard/WithPublicDashboardEndpoints";
 import { setErrorPage } from "metabase/redux/app";
 import type { Mode } from "metabase/visualizations/click-actions/Mode";
@@ -81,6 +80,7 @@ type ReduxProps = ConnectedProps<typeof connector>;
 type OwnProps = {
   dashboardId: DashboardId;
   parameterQueryParams: Query;
+  downloadsEnabled?: boolean;
 };
 
 type DisplayProps = Pick<
@@ -201,7 +201,7 @@ class PublicOrEmbeddedDashboardInner extends Component<PublicOrEmbeddedDashboard
       bordered,
       titled,
       theme,
-      hideDownloadButton,
+      downloadsEnabled = true,
       hideParameters,
     } = this.props;
 
@@ -223,8 +223,6 @@ class PublicOrEmbeddedDashboardInner extends Component<PublicOrEmbeddedDashboard
     const visibleDashcards = (dashboard?.dashcards ?? []).filter(
       dashcard => !isActionDashCard(dashcard),
     );
-
-    const downloadsEnabled = PLUGIN_RESOURCE_DOWNLOADS.areDownloadsEnabled();
 
     return (
       <EmbedFrame
@@ -251,7 +249,7 @@ class PublicOrEmbeddedDashboardInner extends Component<PublicOrEmbeddedDashboard
         titled={titled}
         theme={theme}
         hide_parameters={hideParameters}
-        hide_download_button={hideDownloadButton}
+        downloads={downloadsEnabled}
       >
         <LoadingAndErrorWrapper
           className={cx({
