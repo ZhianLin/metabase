@@ -9,7 +9,9 @@ import {
   setNotebookNativePreviewSidebarWidth,
   setUIControls,
 } from "metabase/query_builder/actions";
-import Notebook from "metabase/query_builder/components/notebook/Notebook";
+import Notebook, {
+  type NotebookProps,
+} from "metabase/query_builder/components/notebook/Notebook";
 import { NotebookNativePreview } from "metabase/query_builder/components/notebook/NotebookNativePreview";
 import { getUiControls } from "metabase/query_builder/selectors";
 import { Flex, Box, rem } from "metabase/ui";
@@ -18,13 +20,22 @@ import { Flex, Box, rem } from "metabase/ui";
 // because we need to trigger the 'onTransitionEnd' in the component
 const delayBeforeNotRenderingNotebook = 10;
 
-interface NotebookContainerProps {
+type NotebookContainerProps = {
   isOpen: boolean;
-}
+} & NotebookProps;
 
 export const NotebookContainer = ({
   isOpen,
-  ...props
+  hasVisualizeButton,
+  isDirty,
+  isResultDirty,
+  isRunnable,
+  question,
+  readOnly,
+  reportTimezone,
+  updateQuestion,
+  runQuestionQuery,
+  setQueryBuilderMode,
 }: NotebookContainerProps) => {
   const [shouldShowNotebook, setShouldShowNotebook] = useState(isOpen);
   const { width: windowWidth } = useWindowSize();
@@ -109,7 +120,18 @@ export const NotebookContainer = ({
           miw={{ lg: minNotebookWidth }}
           style={{ flex: 1, overflowY: "auto" }}
         >
-          <Notebook {...props} />
+          <Notebook
+            question={question}
+            hasVisualizeButton={hasVisualizeButton}
+            isDirty={isDirty}
+            isResultDirty={isResultDirty}
+            isRunnable={isRunnable}
+            readOnly={readOnly}
+            reportTimezone={reportTimezone}
+            updateQuestion={updateQuestion}
+            runQuestionQuery={runQuestionQuery}
+            setQueryBuilderMode={setQueryBuilderMode}
+          />
         </Box>
       )}
 

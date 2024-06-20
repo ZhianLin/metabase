@@ -13,7 +13,6 @@ import type { NotebookStep as INotebookStep, OpenSteps } from "../types";
 interface NotebookStepsProps {
   className?: string;
   question: Question;
-  sourceQuestion?: Question;
   reportTimezone: string;
   updateQuestion: (question: Question) => Promise<void>;
   readOnly?: boolean;
