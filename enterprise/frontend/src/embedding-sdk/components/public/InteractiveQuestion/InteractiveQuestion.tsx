@@ -12,26 +12,14 @@ import type { SdkClickActionPluginsConfig } from "embedding-sdk/lib/plugins";
 import { useSdkSelector } from "embedding-sdk/store";
 import { getPlugins } from "embedding-sdk/store/selectors";
 import CS from "metabase/css/core/index.css";
-import { useToggle } from "metabase/hooks/use-toggle";
 import { useDispatch, useSelector } from "metabase/lib/redux";
 import {
   initializeQBRaw,
   navigateToNewCardInsideQB,
-  onCloseSummary,
-  onEditSummary,
-  setQueryBuilderMode,
   updateQuestion,
 } from "metabase/query_builder/actions";
 import QueryVisualization from "metabase/query_builder/components/QueryVisualization";
-import { ViewHeaderIconButtonContainer } from "metabase/query_builder/components/view/ViewHeader/ViewHeader.styled";
-import {
-  FilterHeader,
-  FilterHeaderButton,
-  FilterHeaderToggle,
-  QuestionNotebookButton,
-  QuestionSummarizeWidget,
-} from "metabase/query_builder/components/view/ViewHeader/components";
-import { MODAL_TYPES } from "metabase/query_builder/constants";
+import { FilterHeader } from "metabase/query_builder/components/view/ViewHeader/components";
 import {
   getCard,
   getFirstQueryResult,
@@ -42,7 +30,6 @@ import {
 import { Flex, Group, Stack, Box, Loader } from "metabase/ui";
 import { getEmbeddingMode } from "metabase/visualizations/click-actions/lib/modes";
 import type { CardId } from "metabase-types/api";
-import type { QueryBuilderMode } from "metabase-types/store";
 
 const returnNull = () => null;
 
@@ -81,13 +68,6 @@ export const _InteractiveQuestion = ({
   const [isQuestionLoading, setIsQuestionLoading] = useState(true);
 
   const { isRunning: isQueryRunning } = uiControls;
-
-  const [
-    areFiltersExpanded,
-    { turnOn: onExpandFilters, turnOff: onCollapseFilters },
-  ] = useToggle(!question?.isSaved());
-
-  const [_, setOpenModal] = useState<string>();
 
   if (question) {
     // FIXME: remove "You can also get an alert when there are some results." feature for question
@@ -161,58 +141,6 @@ export const _InteractiveQuestion = ({
             question={question}
             updateQuestion={(...args) => dispatch(updateQuestion(...args))}
           />
-        )}
-        {FilterHeaderToggle.shouldRender({
-          question,
-          queryBuilderMode: uiControls.queryBuilderMode,
-          isObjectDetail: false,
-        }) && (
-          <FilterHeaderToggle
-            className={cx(CS.ml2, CS.mr1)}
-            query={question.query()}
-            isExpanded={areFiltersExpanded}
-            onExpand={onExpandFilters}
-            onCollapse={onCollapseFilters}
-          />
-        )}
-        {FilterHeaderButton.shouldRender({
-          question,
-          queryBuilderMode: uiControls.queryBuilderMode,
-          isObjectDetail: false,
-          isActionListVisible: true,
-        }) && (
-          <FilterHeaderButton
-            className={cx(CS.hide, CS.smShow)}
-            onOpenModal={() => setOpenModal(MODAL_TYPES.FILTERS)}
-          />
-        )}
-        {QuestionSummarizeWidget.shouldRender({
-          question,
-          queryBuilderMode: uiControls.queryBuilderMode,
-          isObjectDetail: false,
-          isActionListVisible: true,
-        }) && (
-          <QuestionSummarizeWidget
-            className={cx(CS.hide, CS.smShow)}
-            isShowingSummarySidebar={uiControls.isShowingSummarySidebar}
-            onEditSummary={() => dispatch(onEditSummary())}
-            onCloseSummary={() => dispatch(onCloseSummary())}
-          />
-        )}
-        {QuestionNotebookButton.shouldRender({
-          question,
-          isActionListVisible: true,
-        }) && (
-          <ViewHeaderIconButtonContainer>
-            <QuestionNotebookButton
-              iconSize={16}
-              question={question}
-              isShowingNotebook={uiControls.queryBuilderMode === "notebook"}
-              setQueryBuilderMode={(mode: QueryBuilderMode) =>
-                setQueryBuilderMode(mode)
-              }
-            />
-          </ViewHeaderIconButtonContainer>
         )}
         <Group h="100%" pos="relative" align="flex-start">
           <QueryVisualization

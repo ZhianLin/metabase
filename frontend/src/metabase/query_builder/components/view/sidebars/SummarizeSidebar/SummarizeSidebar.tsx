@@ -23,12 +23,10 @@ interface SummarizeSidebarProps {
   onClose: () => void;
 }
 
-export function SummarizeSidebar({
-  className,
+export const SummarizeContent = ({
   query: initialQuery,
   onQueryChange,
-  onClose,
-}: SummarizeSidebarProps) {
+}: Pick<SummarizeSidebarProps, "query" | "onQueryChange">) => {
   const [isDefaultAggregationRemoved, setDefaultAggregationRemoved] =
     useState(false);
 
@@ -113,18 +111,8 @@ export function SummarizeSidebar({
     [query, onQueryChange],
   );
 
-  const handleDoneClick = useCallback(() => {
-    onQueryChange(query);
-    onClose();
-  }, [query, onQueryChange, onClose]);
-
   return (
-    <SidebarView
-      className={className}
-      title={t`Summarize by`}
-      color={color("summarize")}
-      onDone={handleDoneClick}
-    >
+    <>
       <AggregationsContainer>
         {aggregations.map((aggregation, aggregationIndex) => (
           <AggregationItem
@@ -158,6 +146,32 @@ export function SummarizeSidebar({
           />
         </ColumnListContainer>
       )}
+    </>
+  );
+};
+
+export function SummarizeSidebar({
+  className,
+  query,
+  onQueryChange,
+  onClose,
+}: SummarizeSidebarProps) {
+  const handleDoneClick = useCallback(() => {
+    onQueryChange(query);
+    onClose();
+  }, [query, onQueryChange, onClose]);
+
+  return (
+    <SidebarView
+      className={className}
+      title={t`Summarize by`}
+      color={color("summarize")}
+      onDone={handleDoneClick}
+    >
+      <SummarizeContent
+        query={query}
+        onQueryChange={onQueryChange}
+      />
     </SidebarView>
   );
 }

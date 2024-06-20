@@ -1,5 +1,6 @@
 export { FieldPanel } from "./components/FieldPanel";
 export { FilterPanel, FilterPanelButton } from "./components/FilterPanel";
+export { FilterContent, useFilterState } from "./components/FilterContent";
 export { FilterModal } from "./components/FilterModal";
 export { FilterPicker, FilterPickerBody } from "./components/FilterPicker";
 export { TemporalUnitPicker } from "./components/TemporalUnitPicker";
