@@ -76,7 +76,7 @@ const DefaultCollectionEmptyState = ({
   );
 };
 
-const CollectionEmptyIcon = (): JSX.Element => {
+export const CollectionEmptyIcon = (): JSX.Element => {
   return (
     <svg width="117" height="94" fill="none" xmlns="http://www.w3.org/2000/svg">
       <EmptyStateIconForeground

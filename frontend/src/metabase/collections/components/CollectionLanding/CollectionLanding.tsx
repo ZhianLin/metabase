@@ -29,7 +29,7 @@ const CollectionLanding = ({
 
   useEffect(
     function redirectIfTrashCollection() {
-      if (trashCollection?.id === collectionId) {
+      if (trashCollection?.id && trashCollection?.id === collectionId) {
         dispatch(replace("/trash"));
       }
     },
