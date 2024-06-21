@@ -1,7 +1,7 @@
 import { useInteractiveQuestionContext } from "embedding-sdk/components/public/InteractiveQuestionWithContext/InteractiveQuestionContext";
-import Question from "metabase-lib/v1/Question";
-import { Stack } from "metabase/ui";
 import { FilterContent, useFilterState } from "metabase/querying";
+import { Stack } from "metabase/ui";
+import type Question from "metabase-lib/v1/Question";
 
 export const Filter = () => {
   const { isFilterModalOpen, onFilterModalClose, onQueryChange, question } =
@@ -21,7 +21,6 @@ export const FilterInner = ({
   question,
   onQueryChange,
   onFilterModalClose,
-  isFilterModalOpen,
 }: {
   question: Question;
   onQueryChange: (...args: any[]) => void;
@@ -49,7 +48,7 @@ export const FilterInner = ({
     onClose: onFilterModalClose,
   });
 
-  return question && isFilterModalOpen ? (
+  return question ? (
     <Stack>
       <FilterContent.Header
         searchText={searchText}

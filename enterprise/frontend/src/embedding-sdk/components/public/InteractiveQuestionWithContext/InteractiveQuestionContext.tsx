@@ -7,11 +7,16 @@ import {
   type FC,
   type ReactNode,
 } from "react";
+import { t } from "ttag";
 
 import type {
   SdkClickActionPluginsConfig,
   SdkPluginsConfig,
 } from "embedding-sdk";
+import {
+  SdkError,
+  withPublicComponentWrapper,
+} from "embedding-sdk/components/private/PublicComponentWrapper";
 import { getDefaultVizHeight } from "embedding-sdk/lib/default-height";
 import { useSdkSelector } from "embedding-sdk/store";
 import { getPlugins } from "embedding-sdk/store/selectors";
@@ -35,7 +40,6 @@ import * as MBLib from "metabase-lib";
 import type Question from "metabase-lib/v1/Question";
 import type { CardId, Card, Dataset } from "metabase-types/api";
 import type { QueryBuilderUIControls } from "metabase-types/store";
-import { withPublicComponentWrapper } from "embedding-sdk/components/private/PublicComponentWrapper";
 
 type InteractiveQuestionContextProps = {
   card: Card | null;
@@ -55,7 +59,7 @@ type InteractiveQuestionContextProps = {
   plugins: SdkPluginsConfig | null;
   reportTimezone: string;
   result: Dataset | null;
-  question: Question | undefined;
+  question: Question;
   uiControls: QueryBuilderUIControls;
   queryResults: Dataset[] | null;
   hasQuestionChanges: boolean;
@@ -64,7 +68,6 @@ type InteractiveQuestionContextProps = {
   areFiltersExpanded: boolean;
   isQueryRunning: boolean;
   isQuestionLoading: boolean;
-  withResetButton: boolean;
 };
 
 const InteractiveQuestionContext = createContext<
@@ -74,15 +77,9 @@ const InteractiveQuestionContext = createContext<
 export const InteractiveQuestionProvider: FC<{
   questionId: CardId;
   children: ReactNode;
-  withResetButton?: boolean;
   plugins?: SdkClickActionPluginsConfig;
 }> = withPublicComponentWrapper(
-  ({
-    questionId,
-    children,
-    plugins: componentPlugins,
-    withResetButton = true,
-  }) => {
+  ({ questionId, children, plugins: componentPlugins }) => {
     const globalPlugins = useSdkSelector(getPlugins);
 
     const dispatch = useDispatch();
@@ -103,7 +100,6 @@ export const InteractiveQuestionProvider: FC<{
     const [isNotebookOpen, setIsNotebookOpen] = useState(false);
 
     const onQueryChange = async (query: MBLib.Query) => {
-      console.log(query, question);
       if (question) {
         const nextLegacyQuery = MBLib.toLegacyQuery(query);
         const nextQuestion = question.setDatasetQuery(nextLegacyQuery);
@@ -157,6 +153,10 @@ export const InteractiveQuestionProvider: FC<{
       }
     }, [queryResults]);
 
+    if (!queryResults || !question) {
+      return <SdkError message={t`Question not found`} />;
+    }
+
     return (
       <InteractiveQuestionContext.Provider
         value={{
@@ -186,7 +186,6 @@ export const InteractiveQuestionProvider: FC<{
           areFiltersExpanded,
           isQueryRunning,
           isQuestionLoading,
-          withResetButton,
         }}
       >
         {children}
