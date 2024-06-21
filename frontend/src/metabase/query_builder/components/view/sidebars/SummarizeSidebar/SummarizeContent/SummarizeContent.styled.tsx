@@ -1,4 +1,4 @@
-import styled from "@emotion/styled/dist/emotion-styled.cjs";
+import styled from "@emotion/styled";
 
 const Section = styled.section`
   padding: 1.5rem;

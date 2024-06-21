@@ -1,4 +1,4 @@
-import styled from "@emotion/styled/dist/emotion-styled.cjs";
+import styled from "@emotion/styled";
 
 import { AggregationPicker as BaseAggregationPicker } from "metabase/common/components/AggregationPicker";
 
