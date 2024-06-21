@@ -2,10 +2,9 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 import { t } from "ttag";
 
+import { AggregationPicker } from "metabase/query_builder/components/view/sidebars/SummarizeSidebar/AggregationPicker.styled";
 import { Popover, Tooltip } from "metabase/ui";
 import * as Lib from "metabase-lib";
-
-import { AggregationPicker } from "../SummarizeSidebar.styled";
 
 import { AddAggregationButtonRoot } from "./AddAggregationButton.styled";
 

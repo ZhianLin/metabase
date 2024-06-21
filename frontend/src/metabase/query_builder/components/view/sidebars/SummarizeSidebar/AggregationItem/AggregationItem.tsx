@@ -1,9 +1,8 @@
 import { useState } from "react";
 
+import { AggregationPicker } from "metabase/query_builder/components/view/sidebars/SummarizeSidebar/AggregationPicker.styled";
 import { Popover } from "metabase/ui";
 import * as Lib from "metabase-lib";
-
-import { AggregationPicker } from "../SummarizeSidebar.styled";
 
 import { AggregationName, RemoveIcon, Root } from "./AggregationItem.styled";
 
